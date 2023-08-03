@@ -25,9 +25,11 @@ enum CliCommand {
 #[derive(Parser)]
 /// Generates markdown files from rustdoc's JSON output.
 pub struct ToMarkdown {
-    #[arg(short, long, default_value = "cargo +nightly")]
-    /// The cargo command that will be used to invoke `cargo doc`. Must be a nightly compiler.
-    cargo_command: String,
+    #[arg(short, long, default_value = "+nightly")]
+    /// Arguments to pass to cargo. These will go before the doc command,
+    /// and should cause cargo to use a nightly toolchain. For example,
+    /// to use cg_clif to run cargo doc, you would pass `clif` for this argument.
+    cargo_arguments: String,
     #[arg(short = 'd', long)]
     /// Extra cargo doc arguments.
     cargo_doc_arguments: Option<Vec<String>>,

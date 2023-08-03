@@ -20,7 +20,7 @@ mod iterate_children;
 pub fn to_markdown(
     sh: Shell,
     ToMarkdown {
-        cargo_command,
+        cargo_arguments,
         cargo_doc_arguments,
         rustdoc_arguments,
         output_dir,
@@ -52,10 +52,13 @@ pub fn to_markdown(
     };
     println!("rustdoc arguments: \"{rustdoc_arguments}\"");
     let cargo_doc_arguments = cargo_doc_arguments.unwrap_or_default();
-    cmd!(sh, "{cargo_command} doc --no-deps {cargo_doc_arguments...}")
-        .env("RUSTDOCFLAGS", rustdoc_arguments)
-        .env_remove("RUSTFLAGS")
-        .run()?;
+    cmd!(
+        sh,
+        "cargo {cargo_arguments} doc --no-deps {cargo_doc_arguments...}"
+    )
+    .env("RUSTDOCFLAGS", rustdoc_arguments)
+    .env_remove("RUSTFLAGS")
+    .run()?;
 
     let json_path = format!("./target/doc/{crate_name}.json");
     info!("Reading outputted JSON from {json_path}");
