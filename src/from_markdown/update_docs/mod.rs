@@ -75,7 +75,7 @@ pub fn update_docs(sh: &Shell, item: ItemInfo) -> Result<(), Box<dyn Error>> {
         );
     }
 
-    sh.write_file(format!("target/{}", item.file_path), file_contents)?;
+    sh.write_file(&item.file_path, file_contents)?;
 
     Ok(())
 }
