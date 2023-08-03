@@ -44,7 +44,7 @@ pub fn to_markdown(
     info!("Crate name is {crate_name}");
 
     info!("Generating JSON through rustdoc");
-    const DEFAULT_RUSTDOC_ARGUMENTS: &str = "-Z unstable-options --output-format=json";
+    const DEFAULT_RUSTDOC_ARGUMENTS: &str = "-Z unstable-options --output-format=json --document-private-items";
     let rustdoc_arguments = if let Some(rustdoc_arguments) = rustdoc_arguments {
         rustdoc_arguments + " " + DEFAULT_RUSTDOC_ARGUMENTS
     } else {
