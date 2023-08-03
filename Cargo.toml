@@ -1,0 +1,30 @@
+[package]
+name = "doc-sync"
+description = "A CLI to convert rust documentation to markdown files and then back to rust documentation."
+authors = ["naturecodevoid"]
+homepage = "https://github.com/naturecodevoid/doc-sync"
+repository = "https://github.com/naturecodevoid/doc-sync"
+documentation = "https://docs.rs/doc-sync"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+clap = { version = "4.3.10", features = ["derive"] }
+cli-failure = "1.0.0"
+custom_debug_derive = "0.5.1"
+easy-ext = "1.0.1"
+glob = "0.3.1"
+normalize-path = "0.2.1"
+pest = "2.7.0"
+pest_derive = "2.7.0"
+proc-macro2 = { version = "1.0.63", default-features = false, features = ["span-locations"] }
+regex = "1.8.4"
+rustdoc-types = "0.22.0"
+serde_json = "1.0.99"
+syn = { version = "2.0.23", default-features = false, features = ["clone-impls", "full", "parsing", "printing", "extra-traits"] }
+toml = "0.7.5"
+tracing = "0.1.37"
+tracing-subscriber = "0.3.17"
+wrap-match = { version = "1.0.4", features = ["tracing"] }
+xshell = "0.2.3"

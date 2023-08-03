@@ -1,0 +1,60 @@
+/*
+Pest parser to extract the doc comment block from an item
+Does not yet support #[doc = "..."]
+See `item` for the main input
+*/
+
+/*
+Single-line doc comment:
+- `/// Outer`
+- `//! Inner`
+doc_comment_singleline captures the whole comment block
+*/
+doc_comment_singleline_text = { (!(NEWLINE) ~ ANY)* } // Captures until the end of the line
+doc_comment_singleline_type = { "///" | "//!" }
+doc_comment_singleline = {
+	PUSH(doc_comment_singleline_type) // Silently save the type of comment for later
+    ~ (" ")? // Ignore a single space between type and text
+    ~ doc_comment_singleline_text // Capture the initial comment line text
+    ~ (
+    	NEWLINE
+        ~ PEEK // Reuse the type of comment we saved to ensure we are getting the same block
+        ~ (" ")? // Ignore a single space between type and text
+        ~ doc_comment_singleline_text
+    )* // Capture any consecutive lines
+}
+
+/*
+Multi-line doc comment (`\n`'s inserted for demonstration purposes):
+- `/**\nOuter\n*/`
+- `/*!\nInner\n*/`
+*/
+doc_comment_multiline_text = { (!(NEWLINE) ~ !(doc_comment_multiline_ending) ~ ANY)* } // Captures until the end of the line or when the comment block ends
+doc_comment_multiline_type = { "/**" | "/*!" }
+doc_comment_multiline_ending = { "*/" }
+doc_comment_multiline = {
+	doc_comment_multiline_type
+    ~ (doc_comment_multiline_text)? // The first line of the comment may have text on it
+    ~ (NEWLINE ~ doc_comment_multiline_text)* // Capture any other lines including the last line since there can be text on
+                                              //  the same line as the line with the comment block ending
+    ~ doc_comment_multiline_ending
+}
+
+/*
+A rust item:
+```rs
+#[some_attribute] // Ignored, optional
+                  // Attributes can also be after the doc comment, the parser
+                  // doesn't care but it needs to allow attributes before the doc comment as that is valid syntax
+/// This is what gets captured
+/// Also captured
+fn some_item() {} // Ignored, optional (originally at least one character was
+                  // required after the doc comment, but this may cause issues
+                  // for files with nothing in them except for the doc comment)
+```
+*/
+item = {
+    (!(doc_comment_singleline_type | doc_comment_multiline_type) ~ ANY)* // Ignore all characters until a comment
+    ~ (doc_comment_singleline | doc_comment_multiline) // Capture the comment
+    ~ ANY* // Ignore all characters after the comment
+}
