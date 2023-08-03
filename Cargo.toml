@@ -5,7 +5,7 @@ authors = ["naturecodevoid"]
 homepage = "https://github.com/naturecodevoid/doc-sync"
 repository = "https://github.com/naturecodevoid/doc-sync"
 documentation = "https://docs.rs/doc-sync"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 license = "MIT"
 
