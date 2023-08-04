@@ -41,6 +41,7 @@ Here is an incomplete list of situations doc-sync currently doesn't support but 
     determine these values.
 -   Rustdoc code blocks such as ` ```ignore ` will appear as plain text after being converted to markdown. This may be fixable in the future when we stop using rustdoc as we will need a way to store
     data on items, but for now only normal rust code blocks (` ``` `) will appear as rust after being converted to markdown.
+-   doc-sync does not play well with `#[doc = ...]`, especially include_str!. When we stop depending on rustdoc this should be fixed
 
 Here is an incomplete list of situations doc-sync probably won't support ever:
 
